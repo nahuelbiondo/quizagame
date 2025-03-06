@@ -1,0 +1,134 @@
+
+<style>
+
+footer{
+    margin-top:20px
+}
+
+</style>
+
+<div class="d-flex justify-content-center align-items-center mt-3">
+    <div class="p-5 rounded registro" style="width: 100%; max-width: 800px;">
+        <h2 class="text-center mb-4 text-white">Registro</h2>
+
+        {{#error}}
+            <div class="alert alert-danger" role="alert">
+                {{error}}
+            </div>
+        {{/error}}
+
+        <form action="/quizgame/auth/register" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <!-- Primera columna -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="nombre" class="text-white">Nombre</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="usuario" class="text-white">Usuario</label>
+                        <input type="text" class="form-control" id="usuario" name="usuario" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="genero" class="text-white">Género</label>
+                        <select class="form-control" id="genero" name="genero" required>
+                            <option value="">Selecciona tu género</option>
+                            <option value="M">Masculino</option>
+                            <option value="F">Femenino</option>
+                            <option value="O">Otro</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="text-white">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fotoPerfil" class="text-white">Foto de perfil</label>
+                        <input type="file" class="form-control-file" id="fotoPerfil" name="fotoPerfil">
+                    </div>
+                </div>
+
+                <!-- Segunda columna -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="apellido" class="text-white">Apellido</label>
+                        <input type="text" class="form-control" id="apellido" name="apellido" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fechaNacimiento" class="text-white">Fecha de Nacimiento</label>
+                        <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="text-white">Contraseña</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="repeatPassword" class="text-white">Repetir Contraseña</label>
+                        <input type="password" class="form-control" id="repeatPassword" name="repeatPassword" required>
+                    </div>
+                    <!-- Contenedor del mapa -->
+                    <div class="form-group">
+                        <label for="map" class="text-white">Selecciona tu ubicación:</label>
+                        <div id="map" style="height: 200px; width: 100%;"></div>
+                    </div>
+
+                    <input type="hidden" id="ciudad" name="ciudad">
+                    <input type="hidden" id="pais" name="pais">
+
+                </div>
+                    <button type="submit" class="btn btn-primary btn-block mt-3">Registrar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Agrega los scripts de Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+<script>
+    // Inicializa el mapa de OpenStreetMap con Leaflet
+    const map = L.map('map').setView([0, 0], 2); // Centra el mapa mundial
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: ''
+    }).addTo(map);
+
+    let marker;
+
+    // Funcion que geocodifica usando nominatim
+    async function geoCodificacionInversa(lat, lng) {
+        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`);
+        const data = await response.json();
+
+        // Extrae ciudad y pais de la respuesta
+        const ciudad = data.address.city || data.address.town || data.address.village || '';
+        const pais = data.address.country || '';
+
+        // Asigna valores a los campos ocultos
+        document.getElementById('ciudad').value = ciudad;
+        document.getElementById('pais').value = pais;
+    }
+
+    // Evento para capturar la ubicacion al hacer clic en el mapa
+    map.on('click', async function(e) {
+        const { lat, lng } = e.latlng;
+
+        // Coloca un marcador en la ubicación seleccionada
+        if (marker) {
+            marker.setLatLng(e.latlng);
+        } else {
+            marker = L.marker(e.latlng).addTo(map);
+        }
+
+        // Llama a la función de geocodificacion inversa para obtener ciudad y país
+        await geoCodificacionInversa(lat, lng);
+    });
+</script>

@@ -1,0 +1,170 @@
+{{#user}}
+<div class="d-flex flex-column align-items-center justify-content-center">
+  <div class="container custom-container text-light rounded p-5 my-4 d-flex flex-column align-items-start">
+    <h1 class="text-light animate__animated animate__fadeInDown">
+      Bienvenido/a {{usuario}} 
+      <img src="https://media.giphy.com/media/hvRJCLFzcasrR4ia7z/giphy.gif" width="40" alt="saludo">
+    </h1>
+    <h6 class="mt-2">Última partida: {{fecha}}</h6> 
+<div class="row mt-3 w-100">
+
+    <div class="col-md-4 pe-0">
+        <button type="button" class="btn btn-primary btn-lg mb-3 animated-button w-100" data-bs-toggle="modal" data-bs-target="#modalPartida">
+            Nueva partida
+        </button>
+    </div>
+    <div class="col-md-4 pe-2">
+        <a href="/quizgame/home/ranking" class="btn btn-secondary btn-lg ms-1 animated-button w-100">Ver ranking</a>
+    </div>
+    <div class="col-md-4 pe-0">
+         <button type="button" class="btn btn-success btn-lg mb-3 animated-button w-100" data-bs-toggle="modal" data-bs-target="#sugerencia">
+            Sugerir pregunta
+        </button>
+    </div>
+</div>
+    <div class="mt-3 w-100 d-none d-md-block"> <!-- Ocultar en pantallas pequeñas -->
+    <h4 class="rank">Ranking a mejor partida</h4>
+    <div class="table-responsive"> <!-- Hacer que la tabla sea responsive -->
+        <table class="table table-striped table-hover w-100">
+            <thead>
+                <tr>
+                    <th>Posición</th>
+                    <th>Usuario</th>
+                    <th>Puntaje</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#ranking}}
+                <tr class="{{#isUserLogged}}highlight{{/isUserLogged}}">
+                    <td>{{posicion}}</td>
+                    <td class="text-start">
+                        <a href="/quizgame/usuario/perfil?id={{id}}" class="text-decoration-none text-dark">
+                            <img src=".{{fotoPerfil}}" alt="Foto de perfil" class="rounded-circle me-2" width="30" height="30">
+                            {{usuario}}
+                        </a>
+                    </td>
+                    <td>{{puntaje}}</td>
+                    <td>{{fecha}}</td>
+                </tr>
+                {{/ranking}}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalPartida" tabindex="-1" aria-labelledby="modalPartidaLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" >
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalPartidaLabel">Iniciar Nueva Partida</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Estás a punto de comenzar una nueva partida. ¿Estás listo?   <img src="https://emojiterra.com/data/animated-emoji/1f9d0.gif" width="25" alt="saludo"> </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <a href="/quizgame/juego/empezarPartida" class="btn btn-primary">Comenzar</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="sugerencia" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="reportModalLabel">Sugerir pregunta</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="/quizgame/usuario/sugerirPregunta" method="POST">
+                                    <div class="mb-3">
+                                        <label for="pregunta" class="form-label">Pregunta</label>
+                                        <input type="text" name="pregunta" class="form-control" required>
+                                    </div>
+                                       
+                                            <label class="form-label">Opciones:</label>
+                                            <div class="mb-3">
+                                                <input type="text" name="opciones[]" class="form-control mb-2" required>
+                                                  <label>
+                                                    <input type="radio" name="es_correcta" value="0">
+                                                    Correcta
+                                                </label>
+                                                  <input type="text" name="opciones[]" class="form-control mb-2" required>
+                                                    <label>
+                                                    <input type="radio" name="es_correcta" value="1">
+                                                    Correcta
+                                                </label>
+                                                  <input type="text" name="opciones[]" class="form-control mb-2" required>
+                                                    <label>
+                                                    <input type="radio" name="es_correcta" value="2">
+                                                    Correcta
+                                                </label>
+                                                  <input type="text" name="opciones[]" class="form-control mb-2" required>
+                                                <label>
+                                                    <input type="radio" name="es_correcta" value="3">
+                                                    Correcta
+                                                </label>
+                                            </div>
+
+                                            <div>
+                                            <h5 class="modal-title sugerencia" id="reportModalLabel">Categoria</h5>
+                                            <label class="mb-2 d-block">
+                                                <input type="radio" name="categoria" value="1"> Geografia
+                                            </label>
+                                            <label class="mb-2 d-block">
+                                                <input type="radio" name="categoria" value="2"> Historia
+                                            </label>
+                                            <label class="mb-2 d-block">
+                                                <input type="radio" name="categoria" value="3"> Ciencia
+                                            </label>
+                                            <label class="mb-2 d-block">
+                                                <input type="radio" name="categoria" value="4"> Deporte
+                                            </label>
+                                            <label class="mb-2 d-block">
+                                                <input type="radio" name="categoria" value="5"> Arte
+                                            </label>
+                                        </div>
+                      
+                                       
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                        <button type="submit" class="btn btn-danger">Sugerir</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+ {{#partida}}
+<div class="modal fade" id="mensaje" tabindex="-1" aria-labelledby="modalPartidaLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered animate__animated animate__bounceIn">
+    <div class="modal-content">
+      <div class="modal-header bg-warning text-dark">
+        <h5 class="modal-title" id="modalPartidaLabel">😢 ¡Partida Incompleta!</h5>
+      </div>
+      <div class="modal-body text-center">
+        <p class="fs-5">Te fuiste sin terminar tu partida.</p>
+        <p class="fs-4">⚠️ Tu puntaje final: <strong>{{puntaje_obtenido}}</strong></p>
+      </div>
+      <div class="modal-footer justify-content-end">
+        <a href="/quizgame/juego/finalizarPartida" class="btn btn-primary">Finalizar partida</a>
+      </div>
+    </div>
+  </div>
+</div>
+{{/partida}}
+{{/user}}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const modalPartida = new bootstrap.Modal(document.getElementById('mensaje'));
+    modalPartida.show();
+  });
+</script>

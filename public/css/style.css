@@ -1,0 +1,408 @@
+
+
+
+.link{
+    margin-left: 5px;
+    margin-bottom: 5px;
+    color: black;
+    text-decoration: none;
+}
+
+.link:hover{
+    color: rgb(90, 90, 89);
+}
+
+.navbar{
+  background-color: #23233b;
+}
+
+.login{
+  background-color: #23233b;
+}
+
+.sugerencia{
+  margin-bottom: 14px !important;
+}
+#number {
+  width: 10%;
+  font-size:1.5em;
+  color:#ffffff;
+  font-weight: bold;
+}
+
+
+.full-height {
+  height: 90vh; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center; 
+}
+.border-custom {
+  border: 2px solid #ffffff; 
+  border-radius: 4px; 
+}
+
+.form-control {
+  background-color: transparent; 
+}
+
+
+
+body {
+    background-image: url('https://th.bing.com/th/id/R.a9b43019faa05e77eee142859d328f97?rik=TCnkwAe0niPaXQ&pid=ImgRaw&r=0&sres=1&sresct=1'); /* Cambia esta URL por tu imagen de fondo */
+    background-size:auto;
+    background-position: center;
+    overflow-x: hidden;
+    height: 100vh;
+   
+}
+.registro {
+  background-color: #1e2739ec;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
+  border-radius: 10px; 
+ 
+}
+
+.text-correcto {
+  color: green; 
+}
+
+
+.text-white {
+  color: white !important;
+}
+
+
+.form-control {
+  background-color: #f8f9fa; 
+  border: 1px solid #ced4da;
+  color: #495057;
+  transition: background-color 0.3s ease;
+}
+
+.form-control:hover, 
+.form-control:focus {
+  background-color: #f8f9fa; 
+  box-shadow: none; 
+  border-color: #80bdff;
+}
+
+.boton-respuesta {
+  transition: transform 0.3s ease; 
+}
+
+.boton-respuesta:hover {
+  transform: scale(1.1); 
+}
+
+.footer-custom{
+  height: 15vh;
+  background-color: #23233b;
+ 
+}
+.profile{
+    display: flex;
+    width: 100%;
+}
+
+
+.user-profile {
+    display: flex;
+    width: 100%;
+    text-align: center;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: rgba(63, 59, 59, 0.9); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.datos{
+    width: 80%;
+    display: flex;
+}
+.user-logo {
+    display: block;
+    margin: 0 auto 20px;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.date{
+  width:35% !important;
+}
+h2, p {
+    margin: 10px 0;
+}
+.bi{
+  border-radius: 50px;
+}
+.label {
+    font-size: 10px;
+    font-weight: bold;
+}
+.section {
+    padding: 100px 0;
+    position: relative;
+}
+
+img {
+    max-width: 100%;
+}
+img {
+    vertical-align: middle;
+    border-style: none;
+}
+h3.card-title.preg {
+  margin-left: 25px !important;
+}
+label{
+    color: #000000;
+}
+.nav-tabs .nav-link {
+  background-color: white;
+  color: black;
+  border: 1px solid #23233b;
+  border-radius: 10px;
+
+}
+.nav-tabs .nav-link.active {
+  background-color: #23233b;
+
+  color: white;
+}
+.pestañas{
+  margin-left:14%;
+}
+.custom-tabs .nav-link {
+  padding: 12px 20px;
+  font-size: 1.1rem;
+ 
+  color: #fff;
+  border-radius: 10px;
+  box-shadow: 2px 1px 1px 1px rgba(163, 159, 159, 0.769);
+  transition: background-color 0.3s ease;
+}
+.badge {
+  font-size: 0.75rem;
+  padding: 0.35em 0.5em;
+}
+
+.dropdown-container {
+  
+  position: relative;
+}
+
+.dropdown-container > .dropdown-menu {
+  border-radius: 0.5rem;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  max-height: 60vh;
+  overflow-y: auto;
+  width: 550px; 
+  position: absolute;
+  left:-100px;
+}
+
+.dropdown-item {
+  cursor: pointer;
+}
+
+.read {
+  color: #6c757d !important; 
+}
+
+
+.bi-bell-fill {
+  color: #007bff; 
+}
+
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+}
+
+.dropdown-item.read {
+  background-color: #e9ecef;
+}
+
+.dropdown-item .fw-bold {
+  font-size: 0.8rem;
+}
+
+.dropdown-item small {
+  font-size: 0.85rem;
+}
+
+.dropdown-menu-start {
+  min-width: 300px;
+}
+
+.dropdown-menu-start .bi {
+  font-size: 1.5rem;
+}
+
+
+.custom-tabs .nav-link.active {
+  background-color: #2d2d4b; /* Azul de Bootstrap */
+  font-weight: 500;
+  color: #fff;
+}
+
+.custom-tabs .nav-link {
+  background-color: #868f98; /* Gris de Bootstrap */
+}
+
+.custom-tabs .nav-link:hover {
+  background-color: #7e878f;
+}
+
+
+.custom-card {
+  max-width: 850px !important;
+}
+.username-display {
+  margin-top: 60px;
+  color: #3a3a3a; 
+  font-size: 1.3rem; 
+  font-weight: 600; 
+}
+
+.rank{
+  font-size: 1.3em;
+  font-weight: 500;
+}
+.custom-table {
+  width: 80%; 
+  margin: 0 auto; 
+  text-align: center; 
+}
+
+.custom-table > h4{
+  background-color: #23233b;
+  padding: 15px;
+  border-radius: 20px;
+  color: white;
+  display: inline-block;
+}
+.profile-section {
+
+  border-radius: 15px;
+  margin-top: 10px;
+}
+.card {
+  max-width: 800px;
+  margin: auto;
+}
+.profile-info {
+  margin-top: -45px;
+  position: relative;
+}
+.profile-img {
+  width: 100px;
+  height: 100px;
+  border: 3px solid white;
+  position: absolute;
+  top: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.count-data {
+  padding: 15px;
+}
+.count-data h6 {
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+.custom-container {
+  max-width: 100%; 
+  width: 65%;
+  overflow: visible;
+  height: auto; 
+  background-color: #23233b;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
+}
+
+
+.animated-button {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.animated-button:hover {
+  transform: scale(1.05); 
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.animated-button:active {
+  transform: scale(0.98);
+}
+
+
+.animate__animated.animate__fadeInDown {
+  animation: fadeInDown 1s ease forwards;
+}
+
+@keyframes fadeInDown {
+  0% {
+      opacity: 0;
+      transform: translateY(-20px);
+  }
+  100% {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+.highlight {
+  background-color: #ffeb3b; 
+  color: #000; 
+}
+
+.table-row {
+  background-color: rgb(252, 252, 252);
+  transition: background-color 0.3s ease;
+}
+
+.table-row:hover {
+  background-color: rgba(255, 255, 255, 0.76); 
+}
+
+.table th {
+  text-align: center; 
+}
+
+.table td {
+  text-align: center;
+}
+
+
+.table {
+  font-size: 1em;
+  border-radius: 8px; 
+  overflow: hidden; 
+}
+
+.table th {
+  background-color: #104f8d; 
+  color: #ffffff;
+}
+
+.table td {
+  color: #000000; 
+}
+
+
+.table {
+  animation: colorChange 0.5s ease forwards; 
+}
+
+@keyframes colorChange {
+  from {
+    background-color: transparent; 
+  }
+  to {
+    background-color: rgb(255, 255, 255); 
+  }
+}
+

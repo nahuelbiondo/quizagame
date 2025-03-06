@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vista Administrador</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @media print {
+
+            body {
+                background-color: #b64848;
+                color: black;
+            }
+
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            table, th, td {
+                border: 1px solid black; /* Bordes en impresión */
+            }
+        }
+        body {
+
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            color: white;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #23233b;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+
+        .table {
+            border-color: #3a3a5e;
+        }
+
+
+        .table tbody tr:hover {
+            background-color: #3a3a5e;
+        }
+
+
+        .table th, .table td {
+            color: white;
+        }
+
+        /* Estilo general de la tabla */
+.custom-table {
+    width: 100%;
+    border-collapse: collapse; /* Para que las celdas compartan bordes */
+    margin-top: 20px;
+}
+
+/* Estilo de las celdas y los encabezados */
+.custom-table th, .custom-table td {
+    padding: 12px 15px;
+    text-align: left;
+
+}
+
+/* Fondo de encabezado */
+.custom-table thead {
+    background-color: #4CAF50; /* Verde claro para el encabezado */
+    color: white;
+}
+
+.custom-table td.text-light {
+    color: #333;
+}
+.custom-table tbody tr:nth-child(even) {
+    background-color: #2c2c47; /* Color de fondo más oscuro para las filas pares */
+}
+
+/* Estilo del enlace */
+.custom-table a {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    color:white;
+}
+
+/* Estilo de la imagen de perfil */
+.custom-table img.rounded-circle {
+    margin-right: 10px;
+}
+
+/* Resaltar el texto en negrita en la primera columna */
+.custom-table td:first-child {
+    font-weight: bold;
+}
+
+
+    </style>
+</head>
+<body>
+<div class="container my-5">
+    <h1 class="text-center mb-4">Panel de Administrador</h1>
+
+    <!-- Filtros -->
+    <div class="mb-4 align-items-center">
+        <form method="GET" action="http://localhost/quizgame/admin/mostrarAdminView" class="d-flex align-items-center gap-3">
+            <label for="filtro" class="form-label mb-0 text-white" >Filtrar por:</label>
+            <select id="filtro" name="filtro" class="form-select w-auto">
+                <option value="history" selected>Histórico</option>
+                <option value="day">Día</option>
+                <option value="month">Mes</option>
+                <option value="year">Año</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Aplicar</button>
+            <button class="btn btn-primary" onclick="generateBase64Image()">Imprimir</button>
+        </form>
+    </div>
+
+    <!-- Sección de datos generales -->
+    <div class="mb-5">
+        <h2 class="mb-3">Estadísticas Generales</h2>
+        <table class="table table-bordered" style="color: white;">
+            <thead style="background-color: #2c2c47;">
+            <tr>
+                <th>Descripción</th>
+                <th>Valor</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr style="background-color: #23233b;">
+                <td>Cantidad de usuarios</td>
+                <td id="cantidadJugadores">{{cantidad_jugadores}}</td>
+            </tr>
+            <tr style="background-color: #2c2c47;">
+                <td>Cantidad de usuarios nuevos autenticados</td>
+                <td id="cantidadUsuariosNuevos">{{cantidad_usuarios_nuevos}}</td>
+            </tr>
+            <tr style="background-color: #23233b;">
+                <td>Cantidad de preguntas en el juego</td>
+                <td id="cantidadPreguntasJuego">{{cantidad_preguntas_juego}}</td>
+            </tr>
+            <tr style="background-color: #2c2c47;">
+                <td>Cantidad de preguntas creadas</td>
+                <td id="cantidadPreguntasCreadas">{{cantidad_preguntas_creadas}}</td>
+            </tr>
+            <tr style="background-color: #23233b;">
+                <td>Cantidad de partidas jugadas</td>
+                <td id="cantidadPartidasJugadas">{{cantidad_partidas_jugadas}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div style="display: flex; justify-content: center;">
+    <!-- Sección de gráficos -->
+        <div class="mb-2">
+            <h2 class="mb-3">Usuarios por Sexo</h2>
+            <div class="chart-container" style="height:300px; width:400px;">
+                <canvas id="chartUsuariosPorSexo"></canvas>
+            </div>
+        </div>
+        <div class="mb-2">
+            <h2 class="mb-3">Usuarios por Grupo de Edad</h2>
+            <div class="chart-container" style=" height:300px; width:500px;">
+                <canvas id="chartUsuariosPorEdad"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="mt-3 w-40 d-none d-md-block"> <!-- Ocultar en pantallas pequeñas -->
+    <h4 class="rank">Tabla jugadores</h4>
+    <div class="table-responsive"> <!-- Hacer que la tabla sea responsive -->
+       <table class="custom-table w-100">
+    <thead>
+        <tr>
+            <th>Posición</th>
+            <th>Usuario</th>
+            <th>Porcentaje de acierto</th>
+            <th>Última partida</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#jugadores}}
+        <tr>
+            <td>{{posicion}}</td>
+            <td class="text-light">
+                <a href="/quizgame/usuario/perfil?id={{id}}" class="text-decoration-none text-white">
+                    <img src=".{{fotoPerfil}}" alt="Foto de perfil" class="rounded-circle me-2" width="30" height="30">
+                    {{usuario}}
+                </a>
+            </td>
+            <td class="ml-1">{{porcentaje}}%</td>
+            <td>{{fecha}}</td>
+        </tr>
+        {{/jugadores}}
+    </tbody>
+</table>
+
+
+    </div>
+</div>
+
+  </div>
+</div>
+</div>
+
+
+
+
+
+<script>
+        // Datos desde Mustache
+        const usuariosPorSexo = JSON.parse('{{{usuarios_por_sexo}}}');
+        const usuariosPorEdad = JSON.parse('{{{usuarios_por_edad}}}');
+
+        // Gráfico: Usuarios por Sexo
+        const labelsSexo = usuariosPorSexo.map(item =>{
+            if(item.sexo === 'F'){
+                return 'Femenino';
+            }else if (item.sexo === 'M'){
+                return 'Masculino';
+            }
+        });
+        const dataSexo = usuariosPorSexo.map(item => item.cantidad);
+
+        new Chart(document.getElementById('chartUsuariosPorSexo'), {
+            type: 'pie',
+            data: {
+                labels: labelsSexo,
+                datasets: [{
+                    data: dataSexo,
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'white',
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (tooltipItem) {
+                                const label = tooltipItem.label || '';
+                                const value = tooltipItem.raw || 0;
+                                return `: ${value}`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Gráfico: Usuarios por Grupo de Edad
+        const labelsEdad = usuariosPorEdad.map(item => item.grupo);
+        const dataEdad = usuariosPorEdad.map(item => item.cantidad);
+
+        new Chart(document.getElementById('chartUsuariosPorEdad'), {
+            type: 'bar',
+            data: {
+                labels: labelsEdad,
+                datasets: [{
+                    label: 'Cantidad de Usuarios',
+                    data: dataEdad,
+                    backgroundColor: '#4CAF50',
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'white',
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: '',
+                        color: 'white',
+                        font: {
+                            size: 18
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: 'white'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Grupo de Edad',
+                            color: 'white'
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.2)'
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            color: 'white'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Cantidad',
+                            color: 'white'
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.2)',
+                            borderColor: 'white'
+                        }
+                    }
+                }
+            }
+        }); 
+
+        function applyFilter() {
+            const filter = document.getElementById('filter').value;
+            alert(`Filtro aplicado: ${filter}. Asegúrate de implementar el backend para soportarlo.`);
+        }
+    </script>
+
+  <script>
+    document.getElementById('btnGenerarPDF').addEventListener('click', function () {
+        
+    });
+
+function pdf(){
+     var cantidadJugadores = document.getElementById('cantidadJugadores').innerText;
+    var cantidadUsuariosNuevos = document.getElementById('cantidadUsuariosNuevos').innerText;
+    var cantidadPreguntasJuego = document.getElementById('cantidadPreguntasJuego').innerText;
+    var cantidadPreguntasCreadas = document.getElementById('cantidadPreguntasCreadas').innerText;
+    var cantidadPartidasJugadas = document.getElementById('cantidadPartidasJugadas').innerText;
+
+   
+    var data = {
+        cantidad_jugadores: cantidadJugadores,
+        cantidad_usuarios_nuevos: cantidadUsuariosNuevos,
+        cantidad_preguntas_juego: cantidadPreguntasJuego,
+        cantidad_preguntas_creadas: cantidadPreguntasCreadas,
+        cantidad_partidas_jugadas: cantidadPartidasJugadas,
+      
+    };
+        fetch('/quizgame/admin/generarPdf', {
+          method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.blob();
+            }
+            throw new Error('Error al generar el PDF');
+        })
+        .then(blob => {
+           
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'panel-admin.pdf'; 
+            a.click();
+            window.URL.revokeObjectURL(url); L
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+function generateBase64Image() {
+
+    var imageBase64 = document.getElementById('chartUsuariosPorSexo').toDataURL('image/png');
+    var imageBase642 = document.getElementById('chartUsuariosPorEdad').toDataURL('image/png');
+    
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/quizgame/admin/guardarGraficos', true);
+
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            console.log('Imagen guardada en el servidor');
+        }
+    };
+
+    var data = 'image1=' + encodeURIComponent(imageBase64) + '&image2=' + encodeURIComponent(imageBase642);
+    xhr.send(data);
+     pdf();
+}
+
+
+
+    </script>
+</body>
+</html>

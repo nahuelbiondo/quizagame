@@ -1,0 +1,7 @@
+La base se debe llamar quizgame y tiene que contener el archivo quizgame.sql
+
+tipos de usuarios. se puede crear un usuario, debería llegar un correo a tu casilla para validar, pero suele fallar el servicio.
+
+- Común: usuario: cot23   pass: 123
+- admin: usuario: admin   pass: admin
+- editor usuario: editor  pass: editor

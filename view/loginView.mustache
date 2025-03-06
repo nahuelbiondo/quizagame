@@ -1,0 +1,92 @@
+<style>
+
+  
+    .container {
+      height: 90vh; /* Toda la ventana */
+      max-width: 100vw; /* Ancho completo de la ventana */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-image: url('https://th.bing.com/th/id/R.a9b43019faa05e77eee142859d328f97?rik=TCnkwAe0niPaXQ&pid=ImgRaw&r=0&sres=1&sresct=1');
+      background-size: cover;
+      background-position: center;
+    }
+    .login-container {
+      width: 100%; 
+      max-width: 430px; 
+      background-color: #1e2739ec;
+      
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    .form-control {
+      border-radius: 8px;
+    }
+    .btn-primary {
+      background: #007bff;
+      border: none;
+      border-radius: 8px;
+    }
+    .btn-primary:hover {
+      background: #0056b3;
+    }
+    .login-header {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-align: center;
+      color:white;
+    }
+    .login-footer {
+      font-size: 0.9rem;
+      text-align: center;
+      margin-top: 20px;
+   
+    }
+    .login-footer a {
+      text-decoration: none;
+ 
+    }
+    .login-footer a:hover {
+      text-decoration: underline;
+    }
+    footer{
+      background-color: #23233b;
+    }
+    .regist{
+      color:yellow;
+    }
+  </style>
+
+
+<div class="container">
+  <div class="login-container">
+    <div class="login-header">Bienvenido a QuizGame</div>
+     {{#error}}
+            <div class="alert alert-danger p-2" role="alert">
+                <span>{{error}}</span>
+            </div>
+        {{/error}}
+    <form  action="/quizgame/auth/procesarUsuario" method="post">
+      <!-- Username -->
+      <div class="mb-3">
+        <label for="email" class="form-label text-white">Usuario</label>
+        <input type="text" class="form-control" id="email" name="user" placeholder="Ingrese su usuario" required>
+      </div>
+      <!-- Password -->
+      <div class="mb-3">
+        <label for="password" class="form-label text-white">Contraseña</label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="Ingrese contraseña" required>
+      </div>
+      <!-- Login Button -->
+      <div class="d-grid">
+        <button type="submit" class="btn btn-primary">Iniciar sesion</button>
+      </div>
+      <!-- Forgot Password -->
+      <div class="text-center mt-3">
+        <p class="text-white">No tenes una cuenta? <a href="/quizgame/auth/registrar" class="regist">Registrate</a></p>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,153 @@
+
+{{#preguntas}}
+<div class="container d-flex justify-content-center align-items-center" style="height: 90vh;">
+    <div class="card text-center" style="width: 80%; max-width: 600px; border-radius: 20px; box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);">
+       <div class="card-header text-white d-flex justify-content-between align-items-center" style="background-color:{{color}}; border-radius: 20px 20px 0 0;">
+     <img src="{{icono}}" style="width: 45px; height: auto;">
+    <h3 class="card-title preg">Pregunta</h3>
+    <div id="number"></div>
+</div>
+        <div class="card-body" style="padding: 30px;">
+            <p class="card-text h5 mb-4" style="font-weight: bold;">{{pregunta}}</p>
+   
+            <div class="d-grid gap-2 mx-auto" style="width: 100%;">
+                {{#opciones}}
+                <form action="/quizgame/juego/esCorrecta" method="POST">
+                    <button type="submit" name="respuesta" class="btn btn-lg mt-2 boton-respuesta"
+                            value="{{opcion}}"
+                            style="background-color:{{color}}; color: white; border: none; border-radius: 10px; padding: 15px; width: 100%; white-space: nowrap; font-weight: bold;">
+                        {{opcion}}
+                    </button>
+                </form>
+                {{/opciones}}
+            </div>
+            {{/preguntas}}
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="respuestaIncorrectaModal" tabindex="-1" aria-labelledby="respuestaIncorrectaLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="respuestaIncorrectaLabel">Puntaje final:{{puntaje}}</h5>
+      </div>
+      <div class="modal-body text-center">
+        <p class="text-danger h5">Partina finalizada</p>
+       <span>Tiempo restante:</span> <span id="number-modal"></span> 
+        <p class="h5">Respuesta correcta: <span class="text-success">{{respuesta}}<span></p>
+          <!-- Botón de Reportar que abre el modal -->
+          <button type="button" class="btn btn-danger mt-4" style="width: 100%; padding: 10px; border-radius: 10px;" data-bs-toggle="modal" data-bs-target="#reportModal">
+              Reportar Pregunta
+          </button>
+      </div>
+      <div class="modal-footer">
+        <a href="#" class="btn btn-secondary" onclick="cerrarYRedirigir('/quizgame/home/lobby')">Cerrar<a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reportModalLabel">Reportar Pregunta</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="/quizgame/juego/reportePregunta" method="POST">
+          <div class="mb-3">
+            <label for="motivo" class="form-label">Motivo del Reporte</label>
+            <textarea class="form-control" id="motivo" name="motivo" rows="3" required></textarea>
+          </div>
+          <input type="hidden" name="pregunta_id" value="{{pregunta_id}}"> <!-- ID de la pregunta si es necesario -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-danger">Enviar Reporte</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+     <div class="modal fade" id="modalFinJuego" tabindex="-1" aria-labelledby="modalFinJuegoLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-danger text-white">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalFinJuegoLabel">¡El juego ha terminado!</h5>
+                    
+                </div>
+                <div class="modal-body text-center">
+                    <img src="https://emojiterra.com/data/animated-emoji/1f621.gif" width="40" alt="saludo">
+                    <p>El juego ha finalizado porque recargaste la página. ¡Tu puntaje final es {{puntaje}}!</p>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-primary" onclick="finalizarJuego()">Finalizar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="modal fade" id="tiempoTerminado" tabindex="-1" aria-labelledby="tiempoTerminadoLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="tiempoTerminadoLabel">Puntaje final:{{puntaje}}</h5>
+      </div>
+      <div class="modal-body text-center">
+        <p class="text-danger h5">Se te acabo el tiempo lo siento</p>
+          <button type="button" class="btn btn-danger mt-4" style="width: 100%; padding: 10px; border-radius: 10px;" data-bs-toggle="modal" data-bs-target="#reportModal">
+              Reportar Pregunta
+          </button>
+      </div>
+      <div class="modal-footer">
+        <a href="#" class="btn btn-secondary">Cerrar</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../public/js/tiempo.js"></script>
+<script>
+    {{#respuesta_incorrecta}}
+        sessionStorage.setItem('mostrarModal', 'true');
+        sessionStorage.setItem('detenerContador', 'true');
+    {{/respuesta_incorrecta}}
+</script>
+<script>
+
+ window.addEventListener('keydown', function(event) {
+    if (event.key === "F5") { 
+        event.preventDefault(); 
+        terminarJuego();
+    }
+});
+
+function terminarJuego() {
+
+    const modal = new bootstrap.Modal(document.getElementById('modalFinJuego'), {
+        backdrop: 'static', 
+        keyboard: false      
+    });
+     sessionStorage.setItem('detenerContador', 'true');
+    modal.show();
+}
+
+
+function finalizarJuego() {
+    window.location.href = '/quizgame/juego/finalizarPartida';
+}
+</script>
+
+
+
+
+
+
+
+
+

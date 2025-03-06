@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizGame</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.0/mdb.min.css" rel="stylesheet">
+    <link href="../public/css/style.css" rel="stylesheet">
+
+</head>
+{{#user}}
+<header class="bg-teal w3-padding">
+
+        <nav class="navbar navbar-expand-lg p-3">
+    <div class="container-fluid">
+        {{#esUsuario}}
+        <a class="navbar-brand text-white" href="/quizgame/home/lobby">QuizGame</a>
+        {{/esUsuario}}
+
+        {{#editor}}
+            <a class="navbar-brand text-white" href="/quizgame/editor/mostrarEditorView">QuizGame</a>
+        {{/editor}}
+
+        {{#admin}}
+            <a class="navbar-brand text-white" href="/quizgame/admin/mostrarAdminView">QuizGame</a>
+        {{/admin}}
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto">
+                <!-- Notificaciones -->
+                <li class="nav-item dropdown me-2 mt-1">
+    <a class="nav-link text-white position-relative" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+       {{#esUsuario}} <i class="bi bi-bell"></i> 
+        {{#notificaciones}} 
+        <span class="position-absolute top-2 start-100 translate-middle badge rounded-pill bg-danger fs-9">
+           
+                {{cantidad}} 
+            
+            <span class="visually-hidden">nuevas notificaciones</span>
+        </span>
+    </a>
+    <!-- Contenedor del dropdown a la izquierda -->
+<div class="dropdown-container position-relative" style="left: -30px;">
+
+    <ul class="dropdown-menu dropdown-menu-start p-0" aria-labelledby="notificationDropdown" style="max-width: 300px; max-height: 60vh; overflow-y: auto;">
+
+        {{#notificacion}}
+            <li class="dropdown-item px-3 py-3 border-bottom">
+
+                <!-- Contenedor de la notificación -->
+            <div class="d-flex align-items-center flex-wrap">
+    <!-- Icono de notificación -->
+   <div class="me-3 d-flex">
+    <i class="bi bi-bell-fill text-primary"></i>
+    <p class="mb-1 fw-bold" style="color: #0d6efd; margin-left: 10px;">
+        {{tipo}}
+    </p>
+</div>
+   <div class="flex-grow-1">
+    <p class="mb-1 fw-bold text-wrap" style="word-break: break-word; color: #23233b;">
+        {{mensaje}}
+    </p>
+    <!-- Fecha de la notificación -->
+    <small class="text-muted">{{fecha}}</small>
+</div>
+
+</div>
+
+                
+            </li>
+        {{/notificacion}}
+
+        {{^notificacion}}
+            <li class="dropdown-item text-center text-muted">
+                <span>Sin nuevas notificaciones</span>
+            </li>
+        {{/notificacion}}
+
+    </ul>
+</div>
+
+    {{/notificaciones}}
+</li>
+{{/esUsuario}} 
+                <!-- Mi cuenta -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src=".{{fotoPerfil}}" alt="Foto de perfil" class="rounded-circle me-2" width="30" height="30">
+                        Mi cuenta
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                         {{#esUsuario}} <li><a class="dropdown-item" href="/quizgame/usuario/mostrarUserView">Perfil</a></li>  {{/esUsuario}}
+                         {{#editor}}<li><a class="dropdown-item" href="" class="btn btn-success btn-lg mb-3 animated-button w-100" data-bs-toggle="modal" data-bs-target="#nueva-pregunta">Crear pregunta</a></li>{{/editor}}
+                        <li><a class="dropdown-item" href="/quizgame/auth/cerrarSesion">Cerrar sesión</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+</header>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script> // Cuando se despliega el dropdown de notificaciones
+$('#notificationDropdown').on('shown.bs.dropdown', function () {
+    $.ajax({
+        url: '/quizgame/home/leer',
+        type: 'POST',
+        success: function (response) {
+            $('.dropdown-menu .dropdown-item').addClass('read');
+            $('#notificationDropdown .badge').text('0');
+        },
+        error: function (xhr, status, error) {
+            console.error('Error al marcar las notificaciones como leídas:', error);
+        }
+    });
+});
+
+</script>
+
+{{/user}}
+
+
+
+
+
